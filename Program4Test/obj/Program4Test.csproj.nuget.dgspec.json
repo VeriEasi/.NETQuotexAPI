@@ -1,0 +1,142 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\Ali\\Documents\\All Projects\\Visual Studio 2019\\Repos\\VeriEasi\\.NETQuotexAPI\\Program4Test\\Program4Test.csproj": {}
+  },
+  "projects": {
+    "D:\\Ali\\Documents\\All Projects\\Visual Studio 2019\\Repos\\VeriEasi\\.NETQuotexAPI\\Program4Test\\Program4Test.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Ali\\Documents\\All Projects\\Visual Studio 2019\\Repos\\VeriEasi\\.NETQuotexAPI\\Program4Test\\Program4Test.csproj",
+        "projectName": "Program4Test",
+        "projectPath": "D:\\Ali\\Documents\\All Projects\\Visual Studio 2019\\Repos\\VeriEasi\\.NETQuotexAPI\\Program4Test\\Program4Test.csproj",
+        "packagesPath": "C:\\Users\\Ali\\.nuget\\packages\\",
+        "outputPath": "D:\\Ali\\Documents\\All Projects\\Visual Studio 2019\\Repos\\VeriEasi\\.NETQuotexAPI\\Program4Test\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Ali\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "D:\\Ali\\Documents\\All Projects\\Visual Studio 2019\\Repos\\VeriEasi\\.NETQuotexAPI\\QuotexAPI\\QuotexAPI.csproj": {
+                "projectPath": "D:\\Ali\\Documents\\All Projects\\Visual Studio 2019\\Repos\\VeriEasi\\.NETQuotexAPI\\QuotexAPI\\QuotexAPI.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.411\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Ali\\Documents\\All Projects\\Visual Studio 2019\\Repos\\VeriEasi\\.NETQuotexAPI\\QuotexAPI\\QuotexAPI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Ali\\Documents\\All Projects\\Visual Studio 2019\\Repos\\VeriEasi\\.NETQuotexAPI\\QuotexAPI\\QuotexAPI.csproj",
+        "projectName": "QuotexAPI",
+        "projectPath": "D:\\Ali\\Documents\\All Projects\\Visual Studio 2019\\Repos\\VeriEasi\\.NETQuotexAPI\\QuotexAPI\\QuotexAPI.csproj",
+        "packagesPath": "C:\\Users\\Ali\\.nuget\\packages\\",
+        "outputPath": "D:\\Ali\\Documents\\All Projects\\Visual Studio 2019\\Repos\\VeriEasi\\.NETQuotexAPI\\QuotexAPI\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Ali\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "HtmlAgilityPack": {
+              "target": "Package",
+              "version": "[1.11.43, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[108.0.1, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[2.11.0, )"
+            },
+            "Websocket.Client": {
+              "target": "Package",
+              "version": "[4.4.43, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.411\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

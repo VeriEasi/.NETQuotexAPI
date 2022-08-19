@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>QuotexAPI</id>
+    <version>1.0.0</version>
+    <authors>VeriEasi</authors>
+    <description>Package Description</description>
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="HtmlAgilityPack" version="1.11.43" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.1" exclude="Build,Analyzers" />
+        <dependency id="RestSharp" version="108.0.1" exclude="Build,Analyzers" />
+        <dependency id="Serilog" version="2.11.0" exclude="Build,Analyzers" />
+        <dependency id="Websocket.Client" version="4.4.43" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="D:\Ali\Documents\All Projects\Visual Studio 2019\.NetCopyTrade\APIs\QuotexAPI\QuotexAPI\bin\Debug\net5.0\QuotexAPI.dll" target="lib\net5.0\QuotexAPI.dll" />
+  </files>
+</package>
