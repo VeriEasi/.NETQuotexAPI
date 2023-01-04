@@ -1,5 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using QuotexAPI.Enum;
+using QuotexAPI.HTTP;
+using QuotexAPI.WebSocket;
 using System;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace QuotexAPI
@@ -7,78 +10,78 @@ namespace QuotexAPI
     public class QuotexAPI
     {
         // Private Fields:
-        private QuotexWebsocketClient WebsocketClient { get; }
         private QuotexHTTPClient HTTPClient { get; }
-        private AccountType IsDemo { get; }
+        private QuotexWebsocketClient WebSocketClient { get; }
+        private AccountType Type { get; }
 
         // Constructor:
-        public QuotexAPI(string Username, string Password, AccountType IsDemo)
+        public QuotexAPI(string Username, string Password, bool IsDemo)
         {
-            WebsocketClient = new(Username, IsDemo);
+            Type = IsDemo ? AccountType.Demo : AccountType.Real;
+            WebSocketClient = new(Username, Type);
             HTTPClient = new(Username, Password);
-            this.IsDemo = IsDemo;
         }
 
         // Public Methods:
         public async Task<bool> Connect()
         {
-            string SSID = HTTPClient.GetSSID();
-            WebsocketClient.SetSSID(SSID);
-            WebsocketClient.IsConnect = false;
+            string SSID = HTTPClient.GetSSID().Result;
+            WebSocketClient.SetSSID(SSID);
+            WebSocketClient.IsConnect = false;
 
-            await Task.Run(() => WebsocketClient.Start());
-            WebsocketClient.ConnectEvent.Wait(10000);
+            await Task.Run(() => WebSocketClient.Start());
+            WebSocketClient.ConnectEvent.Wait(10000);
 
-            if (WebsocketClient.ConnectEvent.IsSet) return true;
+            if (WebSocketClient.ConnectEvent.IsSet) return true;
             else return false;
         }
 
-        public async Task<JObject> OpenOrder(string Asset, double Amount, int Time, string Action)
+        public async Task<JsonObject> PlaceOrder(string Asset, double Amount, int Time, string Action)
         {
-            WebsocketClient.OpenOrderReq.ResetEvent.Reset();
+            WebSocketClient.OpenOrderReq.ResetEvent.Reset();
             long reqID =new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
-            WebsocketClient.OpenOrderReq.RequestID = reqID;
+            WebSocketClient.OpenOrderReq.RequestID = reqID;
 
             string NewOrder = @"42[""orders/open"",{""asset"":""" + Asset +
                 @""",""amount"":" + Amount +
                 @",""time"":" + Time +
                 @",""action"":""" + Action +
-                @""",""isDemo"":" + (int)IsDemo +
+                @""",""isDemo"":" + (int)Type +
                 @",""requestId"":" + reqID +
                 @",""optionType"":100}]";
-            await Task.Run(() => WebsocketClient.SendWebsocketMessage(NewOrder));
+            await Task.Run(() => WebSocketClient.SendWebsocketMessage(NewOrder));
 
-            WebsocketClient.OpenOrderReq.ResetEvent.Wait(5000);
-            if (WebsocketClient.OpenOrderReq.ResetEvent.IsSet)
-                return WebsocketClient.OpenOrderReq.ResponseData;
+            WebSocketClient.OpenOrderReq.ResetEvent.Wait(5000);
+            if (WebSocketClient.OpenOrderReq.ResetEvent.IsSet)
+                return WebSocketClient.OpenOrderReq.ResponseData;
             else
             {
-                WebsocketClient.OpenOrderReq.ResetEvent.Set();
-                return new JObject { { "error", "Timeout" } };
+                WebSocketClient.OpenOrderReq.ResetEvent.Set();
+                return new JsonObject { { "error", "Timeout" } };
             }
         }
 
-        public async Task<JObject> CancelOrder(string Ticket)
+        public async Task<JsonObject> CancelOrder(string Ticket)
         {
-            WebsocketClient.CancelTradeReq.ResetEvent.Reset();
-            WebsocketClient.CancelTradeReq.OrderTicket = Ticket;
+            WebSocketClient.CancelTradeReq.ResetEvent.Reset();
+            WebSocketClient.CancelTradeReq.OrderTicket = Ticket;
 
             string NewOrder = @"42[""orders/cancel"",{""ticket"":""" + Ticket + @"""}]";
-            await Task.Run(() => WebsocketClient.SendWebsocketMessage(NewOrder));
+            await Task.Run(() => WebSocketClient.SendWebsocketMessage(NewOrder));
 
-            WebsocketClient.CancelTradeReq.ResetEvent.Wait(5000);
-            if (WebsocketClient.CancelTradeReq.ResetEvent.IsSet)
-                return WebsocketClient.CancelTradeReq.ResponseData;
+            WebSocketClient.CancelTradeReq.ResetEvent.Wait(5000);
+            if (WebSocketClient.CancelTradeReq.ResetEvent.IsSet)
+                return WebSocketClient.CancelTradeReq.ResponseData;
             else
             {
-                WebsocketClient.CancelTradeReq.ResetEvent.Set();
-                return new JObject { { "error", "Timeout" } };
+                WebSocketClient.CancelTradeReq.ResetEvent.Set();
+                return new JsonObject { { "error", "Timeout" } };
             }
         }
 
-        public async Task<JObject> OpenPendingOrderByPrice(string Asset, double Amount, double OpenPrice, int Timeframe, string Action)
+        public async Task<JsonObject> PlacePendingOrderByPrice(string Asset, double Amount, double OpenPrice, int Timeframe, string Action)
         {
-            WebsocketClient.OpenPendingReq.ResetEvent.Reset();
+            WebSocketClient.OpenPendingReq.ResetEvent.Reset();
 
             string NewOrder = @"42[""pending/create"",{""openType"":" + 1 +
                 @",""asset"":""" + Asset +
@@ -86,21 +89,21 @@ namespace QuotexAPI
                 @""",""timeframe"":" + Timeframe +
                 @",""command"":""" + Action +
                 @""",""amount"":" + Amount + @"}]";
-            await Task.Run(() => WebsocketClient.SendWebsocketMessage(NewOrder));
+            await Task.Run(() => WebSocketClient.SendWebsocketMessage(NewOrder));
 
-            WebsocketClient.OpenPendingReq.ResetEvent.Wait(5000);
-            if (WebsocketClient.OpenPendingReq.ResetEvent.IsSet)
-                return WebsocketClient.OpenPendingReq.ResponseData;
+            WebSocketClient.OpenPendingReq.ResetEvent.Wait(5000);
+            if (WebSocketClient.OpenPendingReq.ResetEvent.IsSet)
+                return WebSocketClient.OpenPendingReq.ResponseData;
             else
             {
-                WebsocketClient.OpenPendingReq.ResetEvent.Set();
-                return new JObject { { "error", "Timeout" } };
+                WebSocketClient.OpenPendingReq.ResetEvent.Set();
+                return new JsonObject { { "error", "Timeout" } };
             }
         }
 
-        public async Task<JObject> OpenPendingOrderByTime(string Asset, double Amount, DateTime OpenTime, int Timeframe, string Action)
+        public async Task<JsonObject> PlacePendingOrderByTime(string Asset, double Amount, DateTime OpenTime, int Timeframe, string Action)
         {
-            WebsocketClient.OpenPendingReq.ResetEvent.Reset();
+            WebSocketClient.OpenPendingReq.ResetEvent.Reset();
 
             string NewOrder = @"42[""pending/create"",{""openType"":" + 0 +
                 @",""asset"":""" + Asset +
@@ -108,39 +111,40 @@ namespace QuotexAPI
                 @""",""timeframe"":" + Timeframe +
                 @",""command"":""" + Action +
                 @""",""amount"":" + Amount + @"}]";
-            await Task.Run(() => WebsocketClient.SendWebsocketMessage(NewOrder));
+            await Task.Run(() => WebSocketClient.SendWebsocketMessage(NewOrder));
 
-            WebsocketClient.OpenPendingReq.ResetEvent.Wait(5000);
-            if (WebsocketClient.OpenPendingReq.ResetEvent.IsSet)
-                return WebsocketClient.OpenPendingReq.ResponseData;
+            WebSocketClient.OpenPendingReq.ResetEvent.Wait(5000);
+            if (WebSocketClient.OpenPendingReq.ResetEvent.IsSet)
+                return WebSocketClient.OpenPendingReq.ResponseData;
             else
             {
-                WebsocketClient.OpenPendingReq.ResetEvent.Set();
-                return new JObject { { "error", "Timeout" } };
+                WebSocketClient.OpenPendingReq.ResetEvent.Set();
+                return new JsonObject { { "error", "Timeout" } };
             }
         }
 
-        public async Task<JObject> CancelPendingOrder(string Ticket)
+        public async Task<JsonObject> CancelPendingOrder(string Ticket)
         {
-            WebsocketClient.CancelPendingReq.ResetEvent.Reset();
-            WebsocketClient.CancelPendingReq.OrderTicket = Ticket;
+            WebSocketClient.CancelPendingReq.ResetEvent.Reset();
+            WebSocketClient.CancelPendingReq.OrderTicket = Ticket;
 
             string NewOrder = @"42[""pending/cancel"",{""ticket"":""" + Ticket + @"""}]";
-            await Task.Run(() => WebsocketClient.SendWebsocketMessage(NewOrder));
+            await Task.Run(() => WebSocketClient.SendWebsocketMessage(NewOrder));
 
-            WebsocketClient.CancelPendingReq.ResetEvent.Wait(5000);
-            if (WebsocketClient.CancelPendingReq.ResetEvent.IsSet)
-                return WebsocketClient.CancelPendingReq.ResponseData;
+            WebSocketClient.CancelPendingReq.ResetEvent.Wait(5000);
+            if (WebSocketClient.CancelPendingReq.ResetEvent.IsSet)
+                return WebSocketClient.CancelPendingReq.ResponseData;
             else
             {
-                WebsocketClient.CancelPendingReq.ResetEvent.Set();
-                return new JObject { { "error", "Timeout" } };
+                WebSocketClient.CancelPendingReq.ResetEvent.Set();
+                return new JsonObject { { "error", "Timeout" } };
             }
         }
 
-        public async Task SubscribeOrders(Action<JObject> OnOrderMessage)
+        public async Task<bool> SubscribeAccountUpdates(Action<JsonObject> OnOrderUpdate)
         {
-            await Task.Run(() => WebsocketClient.SubscribeOrders(OnOrderMessage));
+            await Task.Run(() => WebSocketClient.SubscribeOrders(OnOrderUpdate));
+            return true;
         }
     }
 }

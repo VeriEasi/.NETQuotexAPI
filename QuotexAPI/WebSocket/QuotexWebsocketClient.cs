@@ -1,13 +1,14 @@
-﻿using System.Net.WebSockets;
-using Websocket.Client;
+﻿using QuotexAPI.Enum;
 using Serilog;
-using System.Text;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Threading.Tasks;
+using System.Net.WebSockets;
+using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading;
+using System.Threading.Tasks;
+using Websocket.Client;
 
-namespace QuotexAPI
+namespace QuotexAPI.WebSocket
 {
     class QuotexWebsocketClient
     {
@@ -26,10 +27,10 @@ namespace QuotexAPI
         // Properties
         private IWebsocketClient ClientWebsocket { get; }
         private string Name { get; }
-        private AccountType IsDemo { get;  }
+        private AccountType IsDemo { get; }
         private string SSIDToken { get; set; }
         private SocketState WebsocketState { get; set; }
-        private Action<JObject> OnOrderMessage { get; set; }
+        private Action<JsonObject> OnOrderMessage { get; set; }
         private Task PingTask { get; set; }
         public bool IsConnect { get; set; }
         public bool IsOrderSubscribe { get; set; }
@@ -101,7 +102,7 @@ namespace QuotexAPI
                         try
                         {
                             string strData = Encoding.Default.GetString(Message.Binary);
-                            JObject js = JObject.Parse(strData.Remove(0, 1));
+                            JsonObject js = JsonNode.Parse(strData.Remove(0, 1)).AsObject();
                             BroadcastOrder(js);
 
                             if (!OpenOrderReq.ResetEvent.IsSet)
@@ -125,7 +126,7 @@ namespace QuotexAPI
                         try
                         {
                             string strData = Encoding.Default.GetString(Message.Binary);
-                            JObject js = JObject.Parse(strData.Remove(0, 1));
+                            JsonObject js = JsonNode.Parse(strData.Remove(0, 1)).AsObject();
                             BroadcastOrder(js);
 
                             if (!CancelTradeReq.ResetEvent.IsSet)
@@ -149,7 +150,7 @@ namespace QuotexAPI
                         try
                         {
                             string strData = Encoding.Default.GetString(Message.Binary);
-                            JObject js = JObject.Parse(strData.Remove(0, 1));
+                            JsonObject js = JsonNode.Parse(strData.Remove(0, 1)).AsObject();
                             BroadcastOrder(js);
 
                             if (!OpenPendingReq.ResetEvent.IsSet)
@@ -170,7 +171,7 @@ namespace QuotexAPI
                         try
                         {
                             string strData = Encoding.Default.GetString(Message.Binary);
-                            JObject js = JObject.Parse(strData.Remove(0, 1));
+                            JsonObject js = JsonNode.Parse(strData.Remove(0, 1)).AsObject();
                             BroadcastOrder(js);
 
                             if (!CancelPendingReq.ResetEvent.IsSet)
@@ -225,7 +226,7 @@ namespace QuotexAPI
             SSIDToken = Token;
         }
 
-        public void SubscribeOrders(Action<JObject> OnOrderMessage)
+        public void SubscribeOrders(Action<JsonObject> OnOrderMessage)
         {
             IsOrderSubscribe = true;
             this.OnOrderMessage = OnOrderMessage;
@@ -237,7 +238,7 @@ namespace QuotexAPI
         }
 
         // Private Methods
-        private void BroadcastOrder(JObject Order)
+        private void BroadcastOrder(JsonObject Order)
         {
             if (IsOrderSubscribe) OnOrderMessage(Order);
         }

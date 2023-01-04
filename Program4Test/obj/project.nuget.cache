@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "FRFgOtr1NBsfX49MKuViG8GKnMFU6GvJJ2VG1dYafxV0mTTqDeuXqARi9SEciy+R23BfGZEdltxhqeJG4pvxaw==",
+  "dgSpecHash": "eMYgbrOJvSMdLWrktPj8wlVov4hXFGHjN5P9JTigkNrnlYv4N+gJSuiGGu6aHBmxIll951x05HxXIzmKSXvdrA==",
   "success": true,
   "projectFilePath": "D:\\Ali\\Documents\\All Projects\\Visual Studio 2019\\Repos\\VeriEasi\\.NETQuotexAPI\\Program4Test\\Program4Test.csproj",
   "expectedPackageFiles": [
@@ -9,7 +9,6 @@
     "C:\\Users\\Ali\\.nuget\\packages\\restsharp\\108.0.1\\restsharp.108.0.1.nupkg.sha512",
     "C:\\Users\\Ali\\.nuget\\packages\\serilog\\2.11.0\\serilog.2.11.0.nupkg.sha512",
     "C:\\Users\\Ali\\.nuget\\packages\\system.reactive\\4.3.2\\system.reactive.4.3.2.nupkg.sha512",
-    "C:\\Users\\Ali\\.nuget\\packages\\system.text.json\\5.0.0\\system.text.json.5.0.0.nupkg.sha512",
     "C:\\Users\\Ali\\.nuget\\packages\\system.threading.channels\\4.7.0\\system.threading.channels.4.7.0.nupkg.sha512",
     "C:\\Users\\Ali\\.nuget\\packages\\websocket.client\\4.4.43\\websocket.client.4.4.43.nupkg.sha512"
   ],

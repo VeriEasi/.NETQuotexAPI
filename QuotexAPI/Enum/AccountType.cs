@@ -1,6 +1,6 @@
-﻿namespace QuotexAPI
+﻿namespace QuotexAPI.Enum
 {
-    public enum AccountType
+    enum AccountType
     {
         Real = 0,
         Demo = 1

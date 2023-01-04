@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Text.Json.Nodes;
 using System.Threading;
 
-namespace QuotexAPI
+namespace QuotexAPI.WebSocket
 {
     class OpenOrderRequest
     {
         public ManualResetEventSlim ResetEvent;
         public long RequestID { get; set; }
-        public JObject ResponseData { get; set; }
+        public JsonObject ResponseData { get; set; }
         public OpenOrderRequest()
         {
             ResetEvent = new();
@@ -17,7 +17,7 @@ namespace QuotexAPI
     class OpenPendingRequest
     {
         public ManualResetEventSlim ResetEvent;
-        public JObject ResponseData { get; set; }
+        public JsonObject ResponseData { get; set; }
         public OpenPendingRequest()
         {
             ResetEvent = new();
@@ -28,7 +28,7 @@ namespace QuotexAPI
     {
         public ManualResetEventSlim ResetEvent;
         public string OrderTicket { get; set; }
-        public JObject ResponseData { get; set; }
+        public JsonObject ResponseData { get; set; }
         public CancelOrderRequest()
         {
             ResetEvent = new();

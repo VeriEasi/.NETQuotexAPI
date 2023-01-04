@@ -1,4 +1,4 @@
-﻿namespace QuotexAPI
+﻿namespace QuotexAPI.WebSocket
 {
     enum SocketState
     {
